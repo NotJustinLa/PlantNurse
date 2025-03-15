@@ -10,10 +10,15 @@ import SwiftUI
 struct ContentView: View {
     @State var isPickerShowing = false
     @State var isCameraViewShowing = false
-    
+    @State var selectedImage: UIImage?
     var body: some View {
         VStack(spacing: 20) {
-            Button {
+            if selectedImage != nil {
+                Image(uiImage: selectedImage!)
+                    .resizable()
+                    .frame(width: 200, height: 200)
+            }
+            Button { 
                 //show the image picker
                 isPickerShowing = true
             } label: {
@@ -28,8 +33,8 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
-            // image picker
-            ImagePicker()
+            // image picker 
+            ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)
         }
         .fullScreenCover(isPresented: $isCameraViewShowing) {
             CameraView()
